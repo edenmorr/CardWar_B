@@ -35,6 +35,7 @@ namespace ariel
 			return convert.str() + " of " + suit;
 		}
 	}
+
 }
 // Card::Card (Rank rank=ACE, Suit suit = diamond):
 // Suit Card::getSuit() { return suit; }

@@ -10,6 +10,7 @@ namespace ariel{
     Player& p1;
     Player& p2;
     std::vector<Card> pile;
+    std::vector<string> gameHisory;
 
     // void printTurnResult( Card &card1,  Card &card2, Player &winner);
     // bool isDraw( Card &card1,  Card &card2);

@@ -24,6 +24,12 @@ void Player::AddCards(Card card)
 {
     this->cards.push_back(card);
 }
+// Card Player::move()
+// {
+//     Card c = this->cards.back();
+//     this->cards.pop_back();
+//     return c;
+// }
     // void Player::addCard(Card card) { // push to the end of the vector
     //     cards.push_back(card);
     // }
@@ -39,15 +45,11 @@ void Player::AddCards(Card card)
     //     return !cards.empty();
     // }
 	
-    // Card Player::playCard() {
-	// 	if(hasCards())
-	// 	{
-	// 	Card card = cards.front();// returns a referens to the first element in the vector
-	// 	cards.erase(cards.begin());// erase the first card in the vector 
-	// 	cards.shrink_to_fit(); // redouce the capacity i did it to save sapace
-    //     return card;
-	// 	}
-	//     throw std::out_of_range("Player " + name + " has no cards!");
-	// }
+    Card Player::playCard() {
+		Card card = cards.front();// returns a referens to the first element in the vector
+		cards.erase(cards.begin());// erase the first card in the vector 
+		cards.shrink_to_fit(); // redouce the capacity i did it to save sapace
+        return card;
+	}
 	
 }

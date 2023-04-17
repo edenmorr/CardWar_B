@@ -40,24 +40,78 @@ namespace ariel {
         CreateAndDealPile(pile,p1,p2);
     }
 
-    // void Game::playTurn() {
-    //     Card card1 = p1.playCard();
-    //     Card card2 = p2.playCard();
+    void Game::playTurn() {
+        if(p1.stacksize() == 0 || p2.stacksize == 0())
+        {
+            throw "end of game"
+        }
+        if(&p1 == &p2)
+        {
+            throw "same player playing himself"
+        }
 
-    //     pile.push_back(card1);
-    //     pile.push_back(card2);
+        string turnHistory;
+        Card p1Card = p1.playCard();
+        Card p2Card = p2.playCard();
 
-    //     if (isDraw(card1, card2)) {
-    //         countdraws++;
-    //         gameLog << p1.getName() << " played " << card1.toString() << " " << p2.getName() << " played " << card2.toString() << ". Draw.\n";
-    //         return;
-    //     }
+        //p1 wins 
+        if((p1Card.getFaceValue > p2Card.getFaceValue() && p2Card.getFaceValue() != 1) ||
+        (p1Card.getFaceValue == 1 && p2Card.getFaceValue != 2) ||
+        (p1Card.getFaceValue == 2 && p2Card.getFaceValue == 1))
+        {
+            // Alice played Queen of Hearts Bob played 5 of Spades. Alice wins.
+            // Alice played 6 of Hearts Bob played 6 of Spades. Draw. Alice played 10 of Clubs Bob played 10 of Diamonds. draw. Alice played Jack of Clubs Bob played King of Diamonds. Bob wins.
+            turnHistory = ......;
+            this->gameHisory.push_back(turnHistory);
 
-    //     Player &winner = (card1 > card2) ? player1 : player2;
-    //     winner.takeCards(pile);
-    //     printTurnResult(card1, card2, winner);
-    //     pile.clear();
-    // }
+
+        }
+        //p2 wins 
+        if((p2Card.getFaceValue > p1Card.getFaceValue() && p1Card.getFaceValue() != 1) ||
+        (p2Card.getFaceValue == 1 && p1Card.getFaceValue != 2) ||
+        (p2Card.getFaceValue == 2 && p1Card.getFaceValue == 1))
+        {
+
+        }
+        // draw
+        if(p1Card.getFaceValue() == p2Card.getFaceValue())
+        {
+            if()
+            {
+
+            }
+            if()
+            {
+
+            }
+            if()
+            {
+                
+            }
+        }
+
+
+
+
+
+
+        Card card1 = p1.playCard();
+        Card card2 = p2.playCard();
+
+        pile.push_back(card1);
+        pile.push_back(card2);
+
+        if (isDraw(card1, card2)) {
+            countdraws++;
+            gameLog << p1.getName() << " played " << card1.toString() << " " << p2.getName() << " played " << card2.toString() << ". Draw.\n";
+            return;
+        }
+
+        Player &winner = (card1 > card2) ? player1 : player2;
+        winner.takeCards(pile);
+        printTurnResult(card1, card2, winner);
+        pile.clear();
+    }
 
     // bool Game::isDraw(const Card &card1, const Card &card2) {
     //     return card1.getRank() == card2.getRank();

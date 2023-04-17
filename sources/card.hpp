@@ -16,7 +16,7 @@ public:
     Card(string s, int r);//: suit(s), faceValue(r){};
 
 	string getSuit() { return suit; }
-	int getRank() { return faceValue; }
+	int getFaceValue() { return faceValue; }
 
 	// static std::string suitName(Suit s);
 	// static std::string RankName(Rank v);
