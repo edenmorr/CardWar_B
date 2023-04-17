@@ -2,7 +2,6 @@
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
-
 #include <string>
 #include "card.hpp"
 using namespace std;
@@ -14,6 +13,8 @@ namespace ariel
 		this->suit = s;
 		this->faceValue = r;
 	}
+	string Card::getSuit() { return suit; }
+	int Card::getFaceValue() { return faceValue; }
 	string Card::ToString()
 	{
 		if(this->faceValue == 11)

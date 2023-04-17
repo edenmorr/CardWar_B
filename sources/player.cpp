@@ -5,17 +5,19 @@ namespace ariel{
 Player::Player(std::string name)
 {
     this->name = name;
-    this->cardsWon = 0;
 }
 
 int Player::cardesTaken()
 {
-    return this->cardsWon;}
+    return this->WiningCardsPile.size();}
 
 int Player::stacksize()
 {
     return this->cards.size();}
 
+void Player::winPile(Card& win) {
+    this->WiningCardsPile.push_back(win);
+}
 std::string Player::getName()
 {
     return this->name;}
@@ -24,27 +26,14 @@ void Player::AddCards(Card card)
 {
     this->cards.push_back(card);
 }
-// Card Player::move()
-// {
-//     Card c = this->cards.back();
-//     this->cards.pop_back();
-//     return c;
-// }
-    // void Player::addCard(Card card) { // push to the end of the vector
-    //     cards.push_back(card);
-    // }
 
-    // void Player::takeCards(std::vector<Card> &cards) { // this function is for when the player that will win the round thak the cards 
-    //     this->cards_drawn += cards.size(); 
-    //     for (Card &card : cards) { 
-    //         addCard(card); 
-    // }
-	// }
+int Player::getWins() {
+    return wins;
+}
 
-    // bool Player::hasCards() { // to cheack if the players has cards to desids how wins  
-    //     return !cards.empty();
-    // }
-	
+int Player::getLoos() {
+    return loos;
+}
     Card Player::playCard() {
 		Card card = cards.front();// returns a referens to the first element in the vector
 		cards.erase(cards.begin());// erase the first card in the vector 
