@@ -19,6 +19,7 @@ namespace ariel{
         public :
         //constrcturs
         Game(Player& p1, Player& p2);
+        void CreateAndDealPile(std::vector<Card>& pile,Player& p1,Player& p2);
         // operations
         void playTurn();
         void playAll();

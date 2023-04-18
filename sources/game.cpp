@@ -8,7 +8,7 @@
 using namespace std;
 
 namespace ariel {
-    void CreateAndDealPile(std::vector<Card> pile,Player& p1,Player& p2)
+    void Game::CreateAndDealPile(std::vector<Card>& pile,Player& p1,Player& p2)
     {
         pile.clear();
         for(int i = 1; i <= 13;i++)
@@ -55,6 +55,10 @@ namespace ariel {
         Card p2Card = p2.playCard();
         if(p1Card.getFaceValue() == p2Card.getFaceValue())
         {
+            turnHistory = p1.getName() + " played " + p1Card.ToString() + " " + p2.getName() + " played " + p2Card.ToString() +
+            ". draw.";
+            gameHisory.push_back(turnHistory);
+            turns++;
             this->tempcountDraw += 1;
             this->countdraws +=1 ;
             //draw and end
@@ -64,8 +68,6 @@ namespace ariel {
                 // this->tempcountDraw -1)  * 2
                 this->p1.SetCardsWon(1 + ((this->tempcountDraw -1)  * 2));
                 this->p2.SetCardsWon(1 + ((this->tempcountDraw -1)  * 2));
-                turnHistory = p1.getName() + " played " + p1Card.ToString() + " " + p2.getName() + " played " + p2Card.ToString() +
-                ". draw.";
             }
             //draw put card face down end 
             else if(this->p1.stacksize() == 1)
@@ -85,6 +87,7 @@ namespace ariel {
         (p1Card.getFaceValue() == 1 && p2Card.getFaceValue() != 2) ||
         (p1Card.getFaceValue() == 2 && p2Card.getFaceValue() == 1))
         {
+
             // add points 
             this->p1.SetCardsWon(2 + (tempcountDraw)*4); 
             // reset tempcountdraw
@@ -94,6 +97,7 @@ namespace ariel {
             turnHistory = p1.getName() + " played " + p1Card.ToString() + " " + p2.getName() + " played " + p2Card.ToString() +
                 "." +p1.getName() + " win.";
             gameHisory.push_back(turnHistory);
+            turns++;
             return;
         }
         //p2 wins 
@@ -109,20 +113,19 @@ namespace ariel {
             }
         turnHistory = p1.getName() + " played " + p1Card.ToString() + " " + p2.getName() + " played " + p2Card.ToString() +
                 "." +p2.getName() + " win.";
-            // turnHistory.append(" " + p2.getName() + " wins.");
             gameHisory.push_back(turnHistory);
+            turns++;
             return;
         }
         }
     void Game::playAll()
     {
-        while(this->p1.stacksize() > 0)
-        {
+        while (p1.stacksize()!=0 && p2.stacksize()!=0) {
             playTurn();
         }
     }
     void Game::printLastTurn(){
-         unsigned long int index = this->gameHisory.size()-1;
+        int index = this->gameHisory.size()-1;
         if(index == -1)
         {
             throw "log is empty" ;
@@ -137,15 +140,16 @@ namespace ariel {
         //index at least  >= 1
         //get one before last
         index --;
-        string temp = this->gameHisory[index];
-        while(temp.substr(temp.length() - 5) == "draw." && index > 0)
+        string temp = this->gameHisory[static_cast<unsigned long int>(index)];
+        while(temp.substr(temp.length() - 4) != "win."&& index > 0)
         {
             index --;
-            temp = this->gameHisory[index];
+          temp = this->gameHisory[static_cast<unsigned long int>(index)];
+
         }
         //temp is not draw temp is win !!!
         //start printing from index + 1
-        for(unsigned long int i = index +1; i < this->gameHisory.size();i++)
+        for (unsigned long int i = static_cast<unsigned long int>(index + 1); i < this->gameHisory.size(); i++)
         {
             cout << this->gameHisory[i] ;
         }
@@ -181,21 +185,18 @@ namespace ariel {
         cout << "DRAW!" << endl;
     }
     }
-    // void Game::printStats(){
-    // cout << "player1:"<< endl;
-    //   cout << "cards taken: " << p1.cardesTaken()<< endl;
-    //                cout<< "wins: "<<endl;
-    //     cout << p1.getWins() << endl;
-    //                 cout<<"loses: " << p1.getLoos() << endl;
-    //     cout << "score:" << ((double)(p1.getWins())/(double)(p1.getLoos())) << endl;
-    //                 cout<<"player2:"<< endl;
-    //                cout<< "cards taken: "<<endl;
-    //     cout<< p2.cardesTaken() << endl;
-    //                 cout<<"wins: " << p2.getWins() << endl;
-    //                 cout<<"loses: " << p2.getLoos() << endl;
-    //     cout<< "score:" << ((double)(p2.getWins())/(double)(p2.getLoos()));
-
-    // }
+    void Game::printStats(){
+    cout<<turns<<endl;
+    cout<< "amount of draws: "<<countdraws<<endl;
+    cout << "player1:"<< endl;
+    cout << "cards taken: " << p1.cardesTaken()<< endl;
+    cout<< "draw rate: "<<(countdraws/turns)<<endl;
+    cout<< "score rate: "<<(int)(turns/p1.cardesTaken())<<endl;
+    cout << "player2:"<< endl;
+    cout << "cards taken: " << p2.cardesTaken()<< endl;
+    cout<< "draw rate: "<<(countdraws/turns)<<endl;
+    cout<< "win rate: " <<(p2.cardesTaken()/turns)<<endl;
+    }
 }
 
 

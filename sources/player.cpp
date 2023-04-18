@@ -31,6 +31,9 @@ int Player::getCardsWon()
 {
     return this->cardsWon;
 }
+int Player::getWins(){
+    return this->wins;
+}
     Card Player::playCard() {
 		Card card = cards.front();// returns a referens to the first element in the vector
 		cards.erase(cards.begin());// erase the first card in the vector 

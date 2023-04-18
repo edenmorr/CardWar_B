@@ -11,9 +11,8 @@ namespace ariel{
         public:
         //coutns winning hands == points
         int cardsWon;
-        // int wins;
+        int wins;
         // int loos;
-        std::vector<Card> WiningCardsPile;
         std::string name;
         std::vector<Card> cards; 
         //constuctors
@@ -22,10 +21,8 @@ namespace ariel{
          // operations
         int cardesTaken(); //test
         int stacksize(); //test
-        // int getWins();
-        // int getLoos();
+        int getWins();
         void AddCards(Card card);
-        // void winPile(Card& win);
         std::string getName();
         Card playCard();
         void SetCardsWon(int num);
