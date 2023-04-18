@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include "game.hpp"
 #include <random>
+#include <cstring>
 using namespace std;
 
 namespace ariel {
@@ -49,31 +50,49 @@ namespace ariel {
         {
             throw "same player playing himself";
         }
-        vector<Card> pileNumber1;
-        vector<Card> pileNumber2;
         string turnHistory;//log
         Card p1Card = p1.playCard();
         Card p2Card = p2.playCard();
-        while (p1.stacksize() != 0 && p2.stacksize() != 0){
-        pileNumber1.push_back(p1.playCard());//puting the cards thet the players pop in two different piles
-        pileNumber2.push_back(p2.playCard());
-        turnHistory.clear();
-        turnHistory = to_string(this->turns++)+")   "+p1.getName() + " played " + pileNumber1.front().ToString() + " " + p2.getName() + " played " + pileNumber2.front().ToString() +
-              ".";
+        if(p1Card.getFaceValue() == p2Card.getFaceValue())
+        {
+            this->tempcountDraw += 1;
+            this->countdraws +=1 ;
+            //draw and end
+            if(this->p1.stacksize() == 0)
+            {
+                // 1 for the first open hand
+                // this->tempcountDraw -1)  * 2
+                this->p1.SetCardsWon(1 + ((this->tempcountDraw -1)  * 2));
+                this->p2.SetCardsWon(1 + ((this->tempcountDraw -1)  * 2));
+                turnHistory = p1.getName() + " played " + p1Card.ToString() + " " + p2.getName() + " played " + p2Card.ToString() +
+                ". draw.";
+            }
+            //draw put card face down end 
+            else if(this->p1.stacksize() == 1)
+            {
+                this->p1.SetCardsWon((this->tempcountDraw)  * 2);
+                this->p2.SetCardsWon((this->tempcountDraw)  * 2);
+            }
+            //middel
+            else
+            {
+                this->tempcountDraw += 1;
+                playTurn();
+            }
+        }
         //p1 wins 
         if((p1Card.getFaceValue() > p2Card.getFaceValue() && p2Card.getFaceValue() != 1) ||
         (p1Card.getFaceValue() == 1 && p2Card.getFaceValue() != 2) ||
         (p1Card.getFaceValue() == 2 && p2Card.getFaceValue() == 1))
         {
-            p2.loos++;
-            p1.wins++;
-            turnHistory.append(" " + p1.getName() + " wins.");
-              while (!pileNumber1.empty() && !pileNumber2.empty()) {
-                p1.winPile(pileNumber2.front());
-                p1.winPile(pileNumber1.front());
-                pileNumber1.pop_back();
-                pileNumber2.pop_back();
+            // add points 
+            this->p1.SetCardsWon(2 + (tempcountDraw)*4); 
+            // reset tempcountdraw
+            if(tempcountDraw!=0){
+            tempcountDraw=0;
             }
+            turnHistory = p1.getName() + " played " + p1Card.ToString() + " " + p2.getName() + " played " + p2Card.ToString() +
+                "." +p1.getName() + " win.";
             gameHisory.push_back(turnHistory);
             return;
         }
@@ -82,87 +101,101 @@ namespace ariel {
         (p2Card.getFaceValue() == 1 && p1Card.getFaceValue() != 2) ||
         (p2Card.getFaceValue() == 2 && p1Card.getFaceValue() == 1))
         {
-        p1.loos++;
-        p2.wins++;
-        turnHistory.append(" " + p2.getName() + " wins.");
-           while (!pileNumber1.empty() && !pileNumber2.empty()) {
-                p2.winPile(pileNumber2.front());
-                p2.winPile(pileNumber1.front());
-                pileNumber1.pop_back();
-                pileNumber2.pop_back();
-
+            // add points 
+            this->p2.SetCardsWon(2 + (tempcountDraw)*4);
+            // reset tempcountdraw
+            if(tempcountDraw!=0){
+            tempcountDraw=0;
             }
+        turnHistory = p1.getName() + " played " + p1Card.ToString() + " " + p2.getName() + " played " + p2Card.ToString() +
+                "." +p2.getName() + " win.";
+            // turnHistory.append(" " + p2.getName() + " wins.");
             gameHisory.push_back(turnHistory);
             return;
         }
-          else if  (p2.stacksize() == 0 || p1.stacksize() == 0) {
-
-             while (!pileNumber1.empty() && !pileNumber2.empty()) {
-                p2.winPile(pileNumber2.front());
-                p1.winPile(pileNumber1.front());
-                pileNumber1.pop_back();
-                pileNumber2.pop_back();
-                }
-
-
-            } else {//draw
-                turnHistory.append("Draw. ");
-                pileNumber1.push_back(p1.playCard());
-                pileNumber2.push_back(p2.playCard());
-            }
-
         }
-        gameHisory.push_back(turnHistory);
-        cout<< turnHistory<<endl;
-    }
-    void Game::playAll(){
-        try{
-        while (this->p1.stacksize()!=0 && this->p2.stacksize()!=0) {
+    void Game::playAll()
+    {
+        while(this->p1.stacksize() > 0)
+        {
             playTurn();
         }
-            }catch (const char *error) {
-        std::cerr << "Error:check play turn! " << error << std::endl;
-    }
     }
     void Game::printLastTurn(){
-        cout << this->gameHisory.back();
+         unsigned long int index = this->gameHisory.size()-1;
+        if(index == -1)
+        {
+            throw "log is empty" ;
+        }
+        //only one log in game log 
+        if(index == 0)
+        {
+            // print
+            cout << this->gameHisory.back() << endl;
+        }
+        //now index is the last entry to log
+        //index at least  >= 1
+        //get one before last
+        index --;
+        string temp = this->gameHisory[index];
+        while(temp.substr(temp.length() - 5) == "draw." && index > 0)
+        {
+            index --;
+            temp = this->gameHisory[index];
+        }
+        //temp is not draw temp is win !!!
+        //start printing from index + 1
+        for(unsigned long int i = index +1; i < this->gameHisory.size();i++)
+        {
+            cout << this->gameHisory[i] ;
+        }
+        cout << endl;
     }
     void Game::printLog() {
         cout
             << "printing log..."
             << endl;
     for (string log: gameHisory) {
-        cout << log << endl;
-    }
+        if(log.substr(log.size()-5 ) == "draw.")
+        {
+            cout << log ;
+        }
+        if(log.substr(log.size()-4 )== "win.")
+        {
+            cout << log << endl;
+        }
+        }
+        string last= this->gameHisory[this->gameHisory.size()-1];
+        if(last.substr(last.size()-5) == "draw.")
+        {
+            cout << endl; 
+        }
     }
     void Game::printWiner(){
-    if (this->p1.WiningCardsPile.size() > p2.WiningCardsPile.size()) {
+    if (this->p1.getCardsWon() > this->p2.getCardsWon()) {
         cout << p1.getName() << endl;
-        return;
     }
-    if (this->p1.WiningCardsPile.size() < p2.WiningCardsPile.size() ) {
+    else if (this->p1.getCardsWon() < this->p2.getCardsWon()) {
         cout << p2.getName() << endl;
-        return;
     } else {
         cout << "DRAW!" << endl;
     }
     }
-    void Game::printStats(){
-    cout << "player1:"<< endl;
+    // void Game::printStats(){
+    // cout << "player1:"<< endl;
+    //   cout << "cards taken: " << p1.cardesTaken()<< endl;
+    //                cout<< "wins: "<<endl;
+    //     cout << p1.getWins() << endl;
+    //                 cout<<"loses: " << p1.getLoos() << endl;
+    //     cout << "score:" << ((double)(p1.getWins())/(double)(p1.getLoos())) << endl;
+    //                 cout<<"player2:"<< endl;
+    //                cout<< "cards taken: "<<endl;
+    //     cout<< p2.cardesTaken() << endl;
+    //                 cout<<"wins: " << p2.getWins() << endl;
+    //                 cout<<"loses: " << p2.getLoos() << endl;
+    //     cout<< "score:" << ((double)(p2.getWins())/(double)(p2.getLoos()));
 
-      cout << "cards taken: " << p1.cardesTaken()<< endl;
-                   cout<< "wins: "<<endl;
-        cout << p1.getWins() << endl;
-                    cout<<"loses: " << p1.getLoos() << endl;
-        cout << "score:" << ((double)(p1.getWins())/(double)(p1.getLoos())) << endl;
-                    cout<<"player2:"<< endl;
-                   cout<< "cards taken: "<<endl;
-         cout<< p2.cardesTaken() << endl;
-                    cout<<"wins: " << p2.getWins() << endl;
-                    cout<<"loses: " << p2.getLoos() << endl;
-         cout<< "score:" << ((double)(p2.getWins())/(double)(p2.getLoos()));
-
-    }
+    // }
 }
 
 

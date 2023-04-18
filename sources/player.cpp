@@ -9,15 +9,12 @@ Player::Player(std::string name)
 
 int Player::cardesTaken()
 {
-    return this->WiningCardsPile.size();}
+    return this->cardsWon;}
 
 int Player::stacksize()
 {
     return this->cards.size();}
 
-void Player::winPile(Card& win) {
-    this->WiningCardsPile.push_back(win);
-}
 std::string Player::getName()
 {
     return this->name;}
@@ -26,13 +23,13 @@ void Player::AddCards(Card card)
 {
     this->cards.push_back(card);
 }
-
-int Player::getWins() {
-    return wins;
+void Player::SetCardsWon(int num)
+{
+    this->cardsWon += num;//mvoe to cpp 
 }
-
-int Player::getLoos() {
-    return loos;
+int Player::getCardsWon()
+{
+    return this->cardsWon;
 }
     Card Player::playCard() {
 		Card card = cards.front();// returns a referens to the first element in the vector
@@ -40,5 +37,4 @@ int Player::getLoos() {
 		cards.shrink_to_fit(); // redouce the capacity i did it to save sapace
         return card;
 	}
-	
 }

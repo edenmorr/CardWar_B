@@ -12,9 +12,10 @@ namespace ariel{
     std::vector<Card> pile;
     std::vector<string> gameHisory;
     int turns=0;
+    int tempcountDraw = 0;
     // void printTurnResult( Card &card1,  Card &card2, Player &winner);
     // bool isDraw( Card &card1,  Card &card2);
-    int countdraws;
+    int countdraws = 0;
         public :
         //constrcturs
         Game(Player& p1, Player& p2);
