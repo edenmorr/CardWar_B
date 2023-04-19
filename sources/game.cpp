@@ -202,7 +202,3 @@ namespace ariel {
     cout<< "win rate: " <<(p2.cardesTaken()/turns)<<endl;
     }
 }
-
-
-
-

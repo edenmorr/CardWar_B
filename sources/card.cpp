@@ -36,5 +36,4 @@ namespace ariel
 			return convert.str() + " of " + suit;
 		}
 	}
-
 }
