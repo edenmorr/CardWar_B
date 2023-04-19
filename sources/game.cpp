@@ -5,6 +5,7 @@
 #include "game.hpp"
 #include <random>
 #include <cstring>
+#include <algorithm>
 using namespace std;
 
 namespace ariel {
@@ -22,7 +23,7 @@ namespace ariel {
         random_device rand;
         mt19937 g(rand());
         shuffle(pile.begin(),pile.end(),g);
-
+        // pile = test_deck();
         for(unsigned long int i = 0;i<pile.size();i++)
         {
             if(i % 2 == 0){
@@ -59,8 +60,8 @@ namespace ariel {
             ". draw.";
             gameHisory.push_back(turnHistory);
             turns++;
-            this->tempcountDraw += 1;
-            this->countdraws +=1 ;
+            this->tempcountDraw ++;
+            this->countdraws ++ ;
             //draw and end
             if(this->p1.stacksize() == 0)
             {
@@ -74,11 +75,14 @@ namespace ariel {
             {
                 this->p1.SetCardsWon((this->tempcountDraw)  * 2);
                 this->p2.SetCardsWon((this->tempcountDraw)  * 2);
+                this->p1.playCard();
+                this->p2.playCard();
             }
             //middel
             else
             {
-                this->tempcountDraw += 1;
+                this->p1.playCard();
+                this->p2.playCard();
                 playTurn();
             }
         }
@@ -111,7 +115,7 @@ namespace ariel {
             if(tempcountDraw!=0){
             tempcountDraw=0;
             }
-        turnHistory = p1.getName() + " played " + p1Card.ToString() + " " + p2.getName() + " played " + p2Card.ToString() +
+            turnHistory = p1.getName() + " played " + p1Card.ToString() + " " + p2.getName() + " played " + p2Card.ToString() +
                 "." +p2.getName() + " win.";
             gameHisory.push_back(turnHistory);
             turns++;

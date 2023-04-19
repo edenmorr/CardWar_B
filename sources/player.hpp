@@ -16,7 +16,7 @@ namespace ariel{
         std::string name;
         std::vector<Card> cards; 
         //constuctors
-        Player(){}
+        // Player(){}
         Player(std::string name);
          // operations
         int cardesTaken(); //test

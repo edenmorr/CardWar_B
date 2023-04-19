@@ -5,6 +5,7 @@ namespace ariel{
 Player::Player(std::string name)
 {
     this->name = name;
+    this->cardsWon = 0;
 }
 
 int Player::cardesTaken()

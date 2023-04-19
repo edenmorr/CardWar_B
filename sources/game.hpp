@@ -6,7 +6,7 @@
 #include "player.hpp"
 namespace ariel{
     class Game{
-    public:
+    private:
     Player &p1;
     Player &p2;
     std::vector<Card> pile;
@@ -18,8 +18,8 @@ namespace ariel{
     int countdraws = 0;
         public :
         //constrcturs
-        Game(Player& p1, Player& p2);
-        void CreateAndDealPile(std::vector<Card>& pile,Player& p1,Player& p2);
+        Game(Player& player1, Player& player2);
+        void CreateAndDealPile(std::vector<Card>& pile,Player& player1,Player& player2);
         // operations
         void playTurn();
         void playAll();

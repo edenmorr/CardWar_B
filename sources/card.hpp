@@ -13,7 +13,7 @@ class Card {
 		string suit;
 		int faceValue;
 public:
-    Card(string s, int r);//: suit(s), faceValue(r){};
+    Card(string suit, int faceValue);//: suit(s), faceValue(r){};
 
 	string getSuit();
 	int getFaceValue();
